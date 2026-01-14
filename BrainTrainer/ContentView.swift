@@ -30,46 +30,68 @@ struct ContentView: View {
             .buttonStyle(BorderedProminentButtonStyle())
             .padding()
             .bold(true)
+            .foregroundStyle(Color.white)
         }
     }
     
     
     var body: some View {
-        VStack() {
-            Text("Brain Trainer")
-                .font(.largeTitle)
-                .foregroundStyle(.blue)
+        
+        ZStack {
+            RadialGradient(colors: [.green, .indigo, .purple, .yellow], center: .bottom, startRadius: 150, endRadius: 750)
+                .ignoresSafeArea(edges: .all)
+                
             
-            Spacer()
-            
-            Text("The app chooses \(moves[currentChoice]).")
-            Text("You must \(winning ? "win" : "lose") this round.")
-                .foregroundStyle(winning ? .green : .red)
-            
-            Spacer()
-            
-            VStack {
-                GameButton(text: "Rock", action: chooseMove)
-                GameButton(text: "Paper", action: chooseMove)
-                GameButton(text: "Scissors", action: chooseMove)
+            VStack() {
+                Text("Brain Trainer")
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(Color.init(red: 0.4, green: 0.4, blue: 0.55))
+                
+                VStack(spacing: 10){
+                
+
+                
+                Text("The app chooses \(moves[currentChoice]).")
+                Text("You must \(winning ? "win" : "lose") this round.")
+                        .foregroundStyle(winning ? .green.opacity(10) : .red.opacity(10))
+                    .font(.headline.bold())
+                
+                
+                
+                
+                    GameButton(text: "Rock", action: chooseMove)
+                    GameButton(text: "Paper", action: chooseMove)
+                    GameButton(text: "Scissors", action: chooseMove)
+                    
+     
+                
+                }
+                .frame(width: 300, height: 250)
+                .padding(.vertical, 30)
+                .background(.thinMaterial)
+                .clipShape(.rect(cornerRadius: 20))
+                
+               
+    
+                
+                Text("Current Score: \(playerScore)")
+                    .font(.headline)
+            }
+                
+                
+                
+                
+                
+            .alert(scoreTitle, isPresented: $showingScore) {
+                Button("Continue", action: appChooses)
+            } message: {
+                Text("Your score is \(playerScore).")
             }
             
-            Spacer()
-            
-            Text("Current Score: \(playerScore)")
-            
-            
-            
-        }
-        .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue", action: appChooses)
-        } message: {
-            Text("Your score is \(playerScore).")
-        }
-        
-        .alert("Game is complete. Your total score is \(playerScore) out of 10.", isPresented: $gameComplete) {
-            Button("Start Over", action: resetGame)
-                .foregroundStyle(.red)
+            .alert("Game is complete. Your total score is \(playerScore) out of 10.", isPresented: $gameComplete) {
+                Button("Start Over", action: resetGame)
+                    .foregroundStyle(.red)
+            }
         }
     }
     
@@ -149,6 +171,7 @@ struct ContentView: View {
             showingScore = true
         }
     }
+
 
     
 
